@@ -1,0 +1,18 @@
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ question.questiontext }}</h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        
+        <!-- Debug: Show how many choices exist -->
+        <p>Number of choices: {{ question.choice_set.count }}</p>
+        
+        {% for choice in question.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% empty %}
+            <p>No choices available for this question.</p>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="Vote">
+</form>
